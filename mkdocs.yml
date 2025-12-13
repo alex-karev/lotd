@@ -1,0 +1,29 @@
+site_name: "LOTD: Lord Of The Datasets"
+site_description: Lord of the Datasets — Efficient NLP dataset preprocessing
+repo_url: https://github.com/alex-karev/lotd
+repo_name: alex-karev/lotd
+
+nav:
+  - Home: index.md
+  - Overview: overview.md
+  - API Reference:
+      - Processors and Filters: processors.md
+      - Collators: collators.md
+      - Templates: templates.md
+      - Utils: utils.md
+      - Datasets: datasets.md
+
+theme: readthedocs
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["src"]
+          options:
+            docstring_style: google
+            show_source: false
+            show_signature_annotations: true
+            separate_signature: true
+            show_root_heading: true
