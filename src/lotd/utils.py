@@ -1,8 +1,7 @@
 import os
-from datasets import Dataset
+from datasets import Dataset, load_from_disk
 from typing import Tuple, Callable
 from torch.utils.data import DataLoader
-from datasets import load_from_disk
 
 def split_dataset(
     dataset: Dataset, train_size: float = 0.8, val_size: float = 0.1, seed: int = 42

@@ -53,9 +53,12 @@
     in {
       default = pkgs.mkShell {
         name = packageName;
-        packages = [
-          (pkgs.python312.withPackages (python-pkgs: (getDependencies python-pkgs) ++ [python-pkgs.mkdocs python-pkgs.mkdocstrings-python]))
-        ];
+        PYTHONPATH = "${self}/src";
+        packages =
+          [
+            pkgs.python312
+          ]
+          ++ getDependencies pkgs.python312Packages;
       };
     });
   };

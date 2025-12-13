@@ -1,5 +1,5 @@
 from transformers import PreTrainedTokenizer, PreTrainedTokenizerFast
-from templates import format_chat
+from .templates import format_chat
 from typing import Union, Dict, List, Tuple
 
 class TextTokenizer:
