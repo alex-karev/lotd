@@ -2,8 +2,6 @@
 
 Efficient NLP dataset preprocessing library for instruction tuning and general NLP tasks.
 
----
-
 ## Features
 
 - Chat and text tokenization
@@ -12,13 +10,9 @@ Efficient NLP dataset preprocessing library for instruction tuning and general N
 - HuggingFace dataset utilities (splitting, caching, dataloaders)
 - Prebuilt Alpaca dataset loader
 
----
-
 ## Documentation
 
 This package provides MkDocs [documentaion](https://alex-karev.github.io/lotd/).
-
----
 
 ## Installation
 
@@ -27,8 +21,6 @@ pip install lotd
 ```
 
 > WARNING: Not available in pip yet
-
----
 
 ## Example Usage
 
@@ -50,17 +42,12 @@ collator = PadCollator(pad_id=0)
 train_loader, val_loader, test_loader = get_loaders(dataset, collate_fn=collator)
 ```
 
----
-
 ## Prebuilt Datasets
 
 ```python
 from lotd.datasets import alpaca
 train_loader, val_loader, test_loader = alpaca(tokenizer=my_tokenizer)
 ```
-
-
----
 
 ## Build
 
@@ -89,8 +76,6 @@ python -m build
 pip install dist/lotd-0.1.0-py3-none-any.whl
 ```
 
----
-
 ## Nix
 
 You can include LOTD in another project with Nix Flakes:
@@ -118,8 +103,6 @@ You can include LOTD in another project with Nix Flakes:
   };
 }
 ```
-
----
 
 ## License
 
