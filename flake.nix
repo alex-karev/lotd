@@ -57,6 +57,8 @@
         packages =
           [
             pkgs.python312
+            pkgs.python312Packages.twine
+            pkgs.python312Packages.build
           ]
           ++ getDependencies pkgs.python312Packages;
       };
