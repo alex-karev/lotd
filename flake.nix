@@ -27,7 +27,7 @@
       pythonPackages = pkgs.python312Packages;
       lotd = pythonPackages.buildPythonPackage {
         pname = packageName;
-        version = "0.1.0";
+        version = "0.1.1";
         pyproject = true;
         src = ./.;
         build-system = [
@@ -53,12 +53,15 @@
     in {
       default = pkgs.mkShell {
         name = packageName;
-        PYTHONPATH = "${self}/src";
         packages =
           [
             pkgs.python312
             pkgs.python312Packages.twine
             pkgs.python312Packages.build
+            pkgs.python312Packages.mkdocs
+            pkgs.python312Packages.mkdocs-material
+            pkgs.python312Packages.mkdocstrings
+            pkgs.python312Packages.mkdocstrings-python
           ]
           ++ getDependencies pkgs.python312Packages;
       };

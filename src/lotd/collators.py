@@ -50,11 +50,14 @@ class PadCollator:
         if self.pre != None:
             batch = self.pre(batch)
         # Pad inputs
-        input_ids = self.pad_fn(batch, "input_ids", self.pad_id)
+        # Use temp pad ids (-42) to prevent excluding intentional pad tokens
+        input_ids = self.pad_fn(batch, "input_ids", -42)
         prompt_mask = self.pad_fn(batch, "prompt_mask", 1)
         # Generate attention_mask
         attention_mask = torch.ones_like(input_ids)
-        attention_mask[input_ids == self.pad_id] = 0
+        attention_mask[input_ids == -42] = 0
+        # Set proper pad ids
+        input_ids[input_ids == -42] = self.pad_id
         # Apply post
         output = {
             "input_ids": input_ids,

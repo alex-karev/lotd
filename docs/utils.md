@@ -13,3 +13,7 @@ A set of helper functions for processing HF datasets.
 ---
 
 ::: lotd.get_loaders
+
+---
+
+::: lotd.strip_features

@@ -1,7 +1,8 @@
 import os
 from datasets import Dataset, load_from_disk
-from typing import Tuple, Callable
+from typing import Tuple, Callable, List
 from torch.utils.data import DataLoader
+
 
 def split_dataset(
     dataset: Dataset, train_size: float = 0.8, val_size: float = 0.1, seed: int = 42
@@ -31,6 +32,7 @@ def split_dataset(
     test = split2["test"]
     return train, val, test
 
+
 def load_cached(cache_path: str, process_fn: Callable) -> Dataset:
     """
     Try loading processed dataset from cache. Processes dataset and saves it to cache if pre-cached dataset is not found.
@@ -51,7 +53,7 @@ def load_cached(cache_path: str, process_fn: Callable) -> Dataset:
         ds.save_to_disk(cache_path)
         print(f"Processed dataset saved to '{cache_path}'")
     print("Dataset is ready!")
-    return ds # type: ignore
+    return ds  # type: ignore
 
 
 def get_loaders(
@@ -65,7 +67,7 @@ def get_loaders(
 ) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Shortcut to generate pytorch dataloaders (train/val/test) from hf dataset.
-    
+
     Args:
         dataset: HF dataset.
         collate_fn: function used for dataset collation.
@@ -87,3 +89,34 @@ def get_loaders(
     val_loader = DataLoader(val, batch_size=batch_size, collate_fn=collate_fn, num_workers=num_workers, shuffle=False)  # type: ignore
     test_loader = DataLoader(test, batch_size=batch_size, collate_fn=collate_fn, num_workers=num_workers, shuffle=False)  # type: ignore
     return train_loader, val_loader, test_loader
+
+
+def strip_features(
+    dataset: Dataset, keep_features: List[str] = ["input_ids", "prompt_mask"]
+) -> Dataset:
+    """
+    Remove all features from dataset except specified ones.
+
+    Args:
+        dataset: HF dataset to purify.
+        keep_features: list of feature names to keep.
+
+    Returns:
+        a new dataset with only specified features.
+
+    Useful for reducing memory usage and cleaning up datasets.
+    """
+
+    # Get current features
+    current_features = set(dataset.features.keys())
+    features_to_remove = current_features - set(keep_features)
+
+    if not features_to_remove:
+        print(f"Dataset already has only {keep_features} features")
+        return dataset
+
+    print(f"Removing features: {list(features_to_remove)}")
+    print(f"Keeping features: {keep_features}")
+
+    # Remove unwanted features
+    return dataset.remove_columns(list(features_to_remove))

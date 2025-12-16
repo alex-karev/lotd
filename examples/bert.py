@@ -1,6 +1,6 @@
 import torch
 from transformers import AutoTokenizer
-from lotd import generate_chat_template, datasets
+from src.lotd import generate_chat_template, datasets
 
 """
 Fine-tunes distilbert-base-uncased with instruction prompt from Alpaca by randomly masking tokens from assistant response

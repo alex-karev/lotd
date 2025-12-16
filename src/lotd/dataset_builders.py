@@ -4,7 +4,7 @@ from datasets import load_dataset
 from torch.utils.data import DataLoader
 from .processors import ChatTokenizer
 from .filters import LengthFilter
-from .utils import load_cached, get_loaders
+from .utils import load_cached, get_loaders, strip_features
 from .collators import PadCollator
 
 """
@@ -65,6 +65,8 @@ def alpaca(
             batched=True,
             batch_size=512,
         )
+        print("Removing features...")
+        ds = strip_features(ds)  # type: ignore
         print("Filtering...")
         old_size = len(ds)  # type: ignore
         ds = ds.filter(
