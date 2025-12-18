@@ -27,7 +27,7 @@
       pythonPackages = pkgs.python312Packages;
       lotd = pythonPackages.buildPythonPackage {
         pname = packageName;
-        version = "0.1.2";
+        version = "0.1.3";
         pyproject = true;
         src = ./.;
         build-system = [
