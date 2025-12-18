@@ -1,11 +1,10 @@
 import torch
 from transformers import AutoTokenizer
-from src.lotd import generate_chat_template, datasets
+from lotd import generate_chat_template, datasets
 
 """
 Fine-tunes distilbert-base-uncased with instruction prompt from Alpaca by randomly masking tokens from assistant response
 """
-
 
 # Post collator for masking
 def post_collator(tokenizer):
@@ -52,6 +51,7 @@ if __name__ == "__main__":
 
     # Print the first sample of the first batch
     for batch in train:
+        print(batch)
         input_ids = tokenizer.decode(
             batch["input_ids"][0], skip_special_tokens=False
         ).replace(" [PAD]", "")

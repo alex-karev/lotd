@@ -8,7 +8,7 @@ class PadCollator:
     Collator which converts inputs into pytorch tensors and applies padding.
     """
 
-    __slots__ = ("pad_id", "pre", "post", "pad_fn")
+    __slots__ = ("pad_id", "pre", "post", "pad_fn", "ignore_columns")
 
     def __init__(
         self,
@@ -16,6 +16,7 @@ class PadCollator:
         pre: Union[Callable, None] = None,
         post: Union[Callable, None] = None,
         padding_side: Literal["right", "left"] = "right",
+        ignore_columns: List[str] = [],
     ) -> None:
         """
         Initializes the collator.
@@ -25,6 +26,7 @@ class PadCollator:
             pre: callable that accepts list of dicts where every key is a dataset feature, modifies it and returns it back.
             post: callable that accepts a dict of tensors of a form `{"input_ids": ..., "attention_mask": ..., "prompt_mask": ...}`, modifies it and returns it back.
             padding_side: can be right or left.
+            ignore_columns: columns to be excluded.
         """
         self.pad_fn: Callable = lambda batch, column, pad: pad_sequence(
             [torch.tensor(x[column]) for x in batch],
@@ -35,6 +37,7 @@ class PadCollator:
         self.pre = pre
         self.post = post
         self.pad_id: int = pad_id
+        self.ignore_columns = ignore_columns
 
     def __call__(self, batch: List[Dict[str, Any]]) -> Dict[str, torch.Tensor]:
         """
@@ -46,7 +49,7 @@ class PadCollator:
         Returns:
             a dict of padded tensors of form `{"input_ids": ..., "attention_mask": ..., "prompt_mask": ...}`.
         """
-        # Apply pre
+        # Apply pre-processing
         if self.pre != None:
             batch = self.pre(batch)
         # Pad inputs
@@ -64,6 +67,16 @@ class PadCollator:
             "attention_mask": attention_mask,
             "prompt_mask": prompt_mask,
         }
+        # Add other columns
+        processed_columns = output.keys()
+        other_columns = batch[0].keys()
+        for column in other_columns:
+            if column in processed_columns or column in self.ignore_columns:
+                continue
+            output[column] = []
+            for sample in batch:
+                output[column].append(sample[column])
+        # Apply post-processing
         if self.post != None:
             output = self.post(output)
         return output
