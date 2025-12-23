@@ -27,7 +27,7 @@
       pythonPackages = pkgs.python312Packages;
       lotd = pythonPackages.buildPythonPackage {
         pname = packageName;
-        version = "0.1.3";
+        version = "0.1.4";
         pyproject = true;
         src = ./.;
         build-system = [
@@ -64,6 +64,14 @@
             pkgs.python312Packages.mkdocstrings-python
           ]
           ++ getDependencies pkgs.python312Packages;
+        shellHook = ''
+          echo -e "Notes for developer:\n"
+          echo -e "Testing: PYTHONPATH=\$PYTHONPATH:./src python examples/*.py"
+          echo -e "Preview docs: mkdocs serve"
+          echo -e "Update docs:\n\t1. edit docs/*\n\t2. mkdocs build\n\t3. mkdocs gh-deploy"
+          echo -e "Update version:\n\t1. update version in pyproject.toml and flake.nix\n\t2. rm -r ./dist\n\t3. python -m build\n\t4. python -m twine upload dist/*"
+          echo -e "When adding new features don't forget to change __init__.py"
+        '';
       };
     });
   };

@@ -30,6 +30,9 @@ class TextTokenizer:
         self.prefix: List[int] = tokenizer(template_parts[0], add_special_tokens=False)["input_ids"]  # type: ignore
         self.suffix: List[int] = tokenizer(template_parts[1], add_special_tokens=False)["input_ids"]  # type: ignore
         self.gaps: Tuple = (len(self.prefix), len(self.suffix))
+        if self.max_length != None:
+            self.max_length -= len(self.prefix) + len(self.suffix)
+            assert self.max_length > 0, "Max length should be larger than prompt length"
 
     def __call__(self, texts: List[str]) -> Dict[str, List[List[int]]]:
         """
