@@ -1595,6 +1595,163 @@ Efficient NLP dataset preprocessing library.</p>
 
 </div>
 
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lotd.datasets.build_dataset" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">build_dataset</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">build_dataset</span><span class="p">(</span><span class="n">preprocess_func</span><span class="p">)</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Decorator for building dataloaders. Processes or tries loading the dataset if <code>cache_path</code> is specified, creates new PadCollator, and returns dataloaders.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="lotd.datasets.tinystories" class="doc doc-heading">
+            <span class="doc doc-object-name doc-function-name">tinystories</span>
+
+
+</h3>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">tinystories</span><span class="p">(</span><span class="n">tokenizer</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PreTrainedTokenizer</span><span class="p">,</span> <span class="n">PreTrainedTokenizerFast</span><span class="p">],</span> <span class="n">template</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;[CLS]{{tex}}[SEP]&#39;</span><span class="p">,</span> <span class="n">cache_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">pre</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">post</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">DataLoader</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Downloads and Pre-processes <a href="https://huggingface.co/datasets/roneneldan/TinyStories">TinyStories</a> dataset for language modeling. <code>train</code> and <code>validation</code> are merged, shuffled and re-split with 80%/10%/10% ratio.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>tokenizer</code></b>
+                  (<code><span title="typing.Union">Union</span>[<span title="transformers.PreTrainedTokenizer">PreTrainedTokenizer</span>, <span title="transformers.PreTrainedTokenizerFast">PreTrainedTokenizerFast</span>]</code>)
+              –
+              <div class="doc-md-description">
+                <p>transformers tokenizer.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>template</code></b>
+                  (<code><span title="str">str</span></code>, default:
+                      <code>&#39;[CLS]{{tex}}[SEP]&#39;</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>prompt template with <code>{{text}}</code> placeholder.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>cache_path</code></b>
+                  (<code><span title="typing.Union">Union</span>[<span title="str">str</span>, None]</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>path to load/save dataset.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>max_length</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>512</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>maximum sequence length for truncation.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>batch_size</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>16</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>dataloaders batch size.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>seed</code></b>
+                  (<code><span title="int">int</span></code>, default:
+                      <code>42</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>splitting and shuffling seed.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>pre</code></b>
+                  (<code><span title="typing.Union">Union</span>[<span title="typing.Callable">Callable</span>, None]</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>see <code>PadCollator</code>.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>post</code></b>
+                  (<code><span title="typing.Union">Union</span>[<span title="typing.Callable">Callable</span>, None]</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>see <code>PadCollator</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="typing.Tuple">Tuple</span>[<span title="torch.utils.data.DataLoader">DataLoader</span>, <span title="torch.utils.data.DataLoader">DataLoader</span>, <span title="torch.utils.data.DataLoader">DataLoader</span>]</code>
+              –
+              <div class="doc-md-description">
+                <p>a tuple of train, validation and test dataloaders.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+    </div>
+
+</div>
+
 
 
   </div>
